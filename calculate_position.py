@@ -6,11 +6,14 @@ def solve_system(x1, y1, x2, y2, x3, y3, d1, d2, d3):
     solutions = []
     if x1 == x2:
         y = (y2**2 - y1**2 + d1**2 - d2**2) / (2 * (y2 - y1))
-        x = x1 + math.sqrt(d1**2 - (y - y1)**2)
-        if abs(x) <= 57.5:
+        discriminant = d1**2 - (y - y1)**2
+        if discriminant < 0:
+            return None
+        x = x1 + math.sqrt(discriminant)
+        if abs(y) <= 39 and abs(x) <= 57.5:
             solutions.append((x, y))
-        x = x1 - math.sqrt(d1**2 - (y - y1)**2)
-        if abs(x) <= 57.5:
+        x = x1 - math.sqrt(discriminant)
+        if abs(y) <= 39 and abs(x) <= 57.5:
             solutions.append((x, y))
     else:
         alpha = (y1 - y2) / (x2 - x1)
@@ -21,15 +24,16 @@ def solve_system(x1, y1, x2, y2, x3, y3, d1, d2, d3):
         b = -2 * (alpha * (x1 - beta) + y1)
         c = (x1 - beta) ** 2 + y1 ** 2 - d1 ** 2
 
-        if (b**2 - 4*a*c < 0):
+        discriminant = b**2 - 4*a*c
+        if discriminant < 0:
             return None
-        y = (-b + math.sqrt(b**2 - 4*a*c)) / (2 * a)
+        y = (-b + math.sqrt(discriminant)) / (2 * a)
         x = alpha * y + beta
-        if abs(y) <= 39:
+        if abs(y) <= 39 and abs(x) <= 57.5:
             solutions.append((x, y))
-        y = (-b - math.sqrt(b**2 - 4*a*c)) / (2 * a)
+        y = (-b - math.sqrt(discriminant)) / (2 * a)
         x = alpha * y + beta
-        if abs(y) <= 39:
+        if abs(y) <= 39 and abs(x) <= 57.5:
             solutions.append((x, y))
     if len(solutions) == 1:
         return solutions[0]
